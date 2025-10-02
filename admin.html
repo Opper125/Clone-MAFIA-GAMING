@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Enhanced Gaming Store</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-animation">
+            <div class="spinner"></div>
+            <p>Loading Admin Panel...</p>
+        </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="adminLogin" class="admin-login">
+        <div class="login-box">
+            <h1>🔐 Admin Login</h1>
+            <div class="form-group">
+                <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+            </div>
+            <div class="error-message" id="loginError"></div>
+            <button onclick="adminLogin()" class="btn-primary">Login</button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>⚙️ Admin Panel</h2>
+                <button onclick="adminLogout()" class="btn-logout">Logout</button>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-section="website-settings" onclick="switchSection('website-settings')">
+                    <span>🌐</span> Website Settings
+                </button>
+                <button class="nav-btn" data-section="banners" onclick="switchSection('banners')">
+                    <span>🖼️</span> Banners
+                </button>
+                <button class="nav-btn" data-section="categories" onclick="switchSection('categories')">
+                    <span>📂</span> Categories
+                </button>
+                <button class="nav-btn" data-section="buttons" onclick="switchSection('buttons')">
+                    <span>🎮</span> Category Buttons
+                </button>
+                <button class="nav-btn" data-section="tables" onclick="switchSection('tables')">
+                    <span>📝</span> Input Tables
+                </button>
+                <button class="nav-btn" data-section="products" onclick="switchSection('products')">
+                    <span>🛍️</span> Products Management
+                </button>
+                <button class="nav-btn" data-section="payments" onclick="switchSection('payments')">
+                    <span>💳</span> Payment Methods
+                </button>
+                <button class="nav-btn" data-section="contacts" onclick="switchSection('contacts')">
+                    <span>📞</span> Contacts
+                </button>
+                <button class="nav-btn" data-section="videos" onclick="switchSection('videos')">
+                    <span>🎥</span> YouTube Videos
+                </button>
+                <button class="nav-btn" data-section="animations" onclick="switchSection('animations')">
+                    <span>✨</span> Animations/Stickers
+                </button>
+                <button class="nav-btn" data-section="orders" onclick="switchSection('orders')">
+                    <span>📦</span> Orders
+                </button>
+                <button class="nav-btn" data-section="users" onclick="switchSection('users')">
+                    <span>👥</span> Users
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Website Settings Section -->
+            <section id="website-settings" class="content-section active">
+                <h2>🌐 Website Settings</h2>
+                
+                <div class="settings-grid">
+                    <div class="setting-card">
+                        <h3>Website Name</h3>
+                        <div class="input-with-emoji">
+                            <input type="text" id="websiteName" placeholder="Enter website name">
+                            <button class="emoji-picker-btn" onclick="openEmojiPicker('websiteName')">😀</button>
+                        </div>
+                        <button onclick="updateWebsiteName()" class="btn-primary">Save</button>
+                    </div>
+
+                    <div class="setting-card">
+                        <h3>Website Logo</h3>
+                        <div class="image-preview" id="logoPreview"></div>
+                        <input type="file" id="logoFile" accept="image/*" onchange="previewLogo()">
+                        <button onclick="uploadLogo()" class="btn-primary">Upload Logo</button>
+                    </div>
+
+                    <div class="setting-card">
+                        <h3>Background Image</h3>
+                        <div class="image-preview" id="bgPreview"></div>
+                        <input type="file" id="bgFile" accept="image/*" onchange="previewBackground()">
+                        <button onclick="uploadBackground()" class="btn-primary">Upload Background</button>
+                    </div>
+
+                    <div class="setting-card">
+                        <h3>Loading Animation</h3>
+                        <div class="image-preview" id="loadingPreview"></div>
+                        <input type="file" id="loadingFile" accept="image/*,.json,.gif,.webm,video/*">
+                        <button onclick="uploadLoadingAnimation()" class="btn-primary">Upload Animation</button>
+                    </div>
+
+                    <div class="setting-card">
+                        <h3>Button Style</h3>
+                        <div class="image-preview" id="buttonPreview"></div>
+                        <input type="file" id="buttonFile" accept="image/*">
+                        <button onclick="uploadButtonStyle()" class="btn-primary">Upload Button Style</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Banners Section -->
+            <section id="banners" class="content-section">
+                <h2>🖼️ Banners Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add New Banner</h3>
+                    <input type="file" id="bannerFile" accept="image/*">
+                    <button onclick="addBanner()" class="btn-primary">Add Banner</button>
+                </div>
+
+                <div class="items-grid" id="bannersContainer"></div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="categories" class="content-section">
+                <h2>📂 Categories Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add New Category</h3>
+                    <div class="input-with-emoji">
+                        <input type="text" id="categoryTitle" placeholder="Category Title">
+                        <button class="emoji-picker-btn" onclick="openEmojiPicker('categoryTitle')">😀</button>
+                    </div>
+                    <button onclick="addCategory()" class="btn-primary">Add Category</button>
+                </div>
+
+                <div class="items-list" id="categoriesContainer"></div>
+            </section>
+
+            <!-- Category Buttons Section -->
+            <section id="buttons" class="content-section">
+                <h2>🎮 Category Buttons Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add New Button</h3>
+                    <select id="buttonCategorySelect" class="form-select">
+                        <option value="">Select Category</option>
+                    </select>
+                    <div class="input-with-emoji">
+                        <input type="text" id="buttonName" placeholder="Button Name">
+                        <button class="emoji-picker-btn" onclick="openEmojiPicker('buttonName')">😀</button>
+                    </div>
+                    <input type="file" id="buttonIconFile" accept="image/*">
+                    <button onclick="addCategoryButton()" class="btn-primary">Add Button</button>
+                </div>
+
+                <div class="items-grid" id="buttonsContainer"></div>
+            </section>
+
+            <!-- Input Tables Section -->
+            <section id="tables" class="content-section">
+                <h2>📝 Input Tables Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add Input Tables</h3>
+                    <select id="tableCategorySelect" class="form-select" onchange="loadButtonsForTables()">
+                        <option value="">Select Category</option>
+                    </select>
+                    <select id="tableButtonSelect" class="form-select">
+                        <option value="">Select Button</option>
+                    </select>
+                    
+                    <div id="tablesInputContainer">
+                        <div class="table-input-group">
+                            <div class="input-with-emoji">
+                                <input type="text" class="table-name" placeholder="Table Name">
+                                <button class="emoji-picker-btn" onclick="openEmojiPickerForClass(this, 'table-name')">😀</button>
+                            </div>
+                            <div class="input-with-emoji">
+                                <input type="text" class="table-instruction" placeholder="Instruction">
+                                <button class="emoji-picker-btn" onclick="openEmojiPickerForClass(this, 'table-instruction')">😀</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="addTableInput()" class="btn-secondary">+ Add More Table</button>
+                    <button onclick="saveTables()" class="btn-primary">Save All Tables</button>
+                </div>
+
+                <div class="items-list" id="tablesContainer"></div>
+            </section>
+
+            <!-- ✨ NEW: Enhanced Products Management Section -->
+            <section id="products" class="content-section">
+                <h2>🛍️ Enhanced Products Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add New Product</h3>
+                    
+                    <!-- Step 1: Category & Button Selection -->
+                    <div class="form-section">
+                        <h4>📍 Location Selection</h4>
+                        <select id="productCategorySelect" class="form-select" onchange="loadButtonsForProducts()">
+                            <option value="">Select Category</option>
+                        </select>
+                        <select id="productButtonSelect" class="form-select">
+                            <option value="">Select Button (Page Location)</option>
+                        </select>
+                    </div>
+
+                    <!-- Step 2: Basic Product Information -->
+                    <div class="form-section">
+                        <h4>📝 Basic Information</h4>
+                        <div class="input-with-emoji">
+                            <input type="text" id="productName" placeholder="Product Name" required>
+                            <button class="emoji-picker-btn" onclick="openEmojiPicker('productName')">😀</button>
+                        </div>
+                        
+                        <div class="input-with-emoji">
+                            <textarea id="productDescription" placeholder="Product Description / Details" rows="3" required></textarea>
+                            <button class="emoji-picker-btn" onclick="openEmojiPicker('productDescription')">😀</button>
+                        </div>
+                        
+                        <div class="input-with-emoji">
+                            <input type="text" id="productCategory" placeholder="Product Category (e.g., Rare Item, Epic Account)" required>
+                            <button class="emoji-picker-btn" onclick="openEmojiPicker('productCategory')">😀</button>
+                        </div>
+                        
+                        <div class="input-with-emoji">
+                            <input type="text" id="productQuality" placeholder="Quality Level (e.g., Common, Rare, Epic, Legendary)">
+                            <button class="emoji-picker-btn" onclick="openEmojiPicker('productQuality')">😀</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Game/Product Specific -->
+                    <div class="form-section">
+                        <h4>🎮 Game/Product Details</h4>
+                        <select id="productType" class="form-select" required>
+                            <option value="">Select Product Type</option>
+                            <option value="game">Game Account</option>
+                            <option value="item">Game Item</option>
+                            <option value="currency">Game Currency</option>
+                            <option value="service">Gaming Service</option>
+                            <option value="software">Software/Tool</option>
+                            <option value="other">Other</option>
+                        </select>
+                        
+                        <div class="input-with-emoji">
+                            <input type="text" id="gameName" placeholder="Game Name / Related Platform">
+                            <button class="emoji-picker-btn" onclick="openEmojiPicker('gameName')">😀</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Availability & Pricing -->
+                    <div class="form-section">
+                        <h4>💰 Pricing & Availability</h4>
+                        <input type="number" id="availableQuantity" placeholder="Available Quantity" min="0" value="1" required>
+                        <input type="number" id="productPrice" placeholder="Price (MMK)" min="0" required>
+                    </div>
+
+                    <!-- Step 5: Contact Information -->
+                    <div class="form-section">
+                        <h4>📞 Contact Information</h4>
+                        <div class="input-with-emoji">
+                            <input type="text" id="socialMediaName" placeholder="Contact Platform (e.g., Discord, Telegram, Facebook)" required>
+                            <button class="emoji-picker-btn" onclick="openEmojiPicker('socialMediaName')">😀</button>
+                        </div>
+                        <input type="url" id="socialMediaLink" placeholder="Contact Link (https://...)" required>
+                    </div>
+
+                    <!-- Step 6: Payment Methods Selection -->
+                    <div class="form-section">
+                        <h4>💳 Available Payment Methods</h4>
+                        <p style="font-size: 14px; color: #94a3b8; margin-bottom: 15px;">
+                            Select which payment methods customers can use for this product:
+                        </p>
+                        <div id="paymentMethodsSelection" class="payment-methods-grid">
+                            <!-- Payment methods will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Step 7: Product Images -->
+                    <div class="form-section">
+                        <h4>📸 Product Images</h4>
+                        <p style="font-size: 14px; color: #94a3b8; margin-bottom: 15px;">
+                            Upload multiple images (Max: 10MB per image, Total: 50MB per upload)
+                        </p>
+                        <input type="file" id="productImages" multiple accept="image/*" onchange="previewProductImages()">
+                        <div id="productImagesPreview" class="images-preview-grid"></div>
+                        <div id="uploadProgressInfo" class="upload-info"></div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button onclick="saveProduct()" class="btn-primary btn-large" style="margin-top: 20px;">
+                        🚀 Create Product
+                    </button>
+                </div>
+
+                <!-- Products List -->
+                <div class="products-list" id="productsContainer"></div>
+            </section>
+
+            <!-- Payment Methods Section -->
+            <section id="payments" class="content-section">
+                <h2>💳 Payment Methods Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add Payment Method</h3>
+                    <div class="input-with-emoji">
+                        <input type="text" id="paymentName" placeholder="Payment Name">
+                        <button class="emoji-picker-btn" onclick="openEmojiPicker('paymentName')">😀</button>
+                    </div>
+                    <input type="text" id="paymentAddress" placeholder="Payment Address">
+                    <div class="textarea-with-emoji">
+                        <textarea id="paymentInstructions" placeholder="Instructions" rows="3"></textarea>
+                        <button class="emoji-picker-btn" onclick="openEmojiPicker('paymentInstructions')">😀</button>
+                    </div>
+                    <input type="file" id="paymentIconFile" accept="image/*">
+                    <button onclick="addPaymentMethod()" class="btn-primary">Add Payment</button>
+                </div>
+
+                <div class="items-grid" id="paymentsContainer"></div>
+            </section>
+
+            <!-- Contacts Section -->
+            <section id="contacts" class="content-section">
+                <h2>📞 Contacts Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add Contact</h3>
+                    <div class="input-with-emoji">
+                        <input type="text" id="contactName" placeholder="Contact Name">
+                        <button class="emoji-picker-btn" onclick="openEmojiPicker('contactName')">😀</button>
+                    </div>
+                    <div class="textarea-with-emoji">
+                        <textarea id="contactDescription" placeholder="Description" rows="2"></textarea>
+                        <button class="emoji-picker-btn" onclick="openEmojiPicker('contactDescription')">😀</button>
+                    </div>
+                    <input type="text" id="contactLink" placeholder="Link (optional)">
+                    <input type="text" id="contactAddress" placeholder="Address (optional)">
+                    <input type="file" id="contactIconFile" accept="image/*">
+                    <button onclick="addContact()" class="btn-primary">Add Contact</button>
+                </div>
+
+                <div class="items-grid" id="contactsContainer"></div>
+            </section>
+
+            <!-- YouTube Videos Section -->
+            <section id="videos" class="content-section">
+                <h2>🎥 YouTube Videos Management</h2>
+                
+                <div class="action-card">
+                    <h3>Add YouTube Video</h3>
+                    <select id="videoCategorySelect" class="form-select" onchange="loadButtonsForVideos()">
+                        <option value="">Select Category</option>
+                    </select>
+                    <select id="videoButtonSelect" class="form-select">
+                        <option value="">Select Button</option>
+                    </select>
+                    <input type="file" id="videoBannerFile" accept="image/*">
+                    <input type="text" id="videoUrl" placeholder="YouTube Video URL">
+                    <div class="textarea-with-emoji">
+                        <textarea id="videoDescription" placeholder="Description" rows="2"></textarea>
+                        <button class="emoji-picker-btn" onclick="openEmojiPicker('videoDescription')">😀</button>
+                    </div>
+                    <button onclick="addVideo()" class="btn-primary">Add Video</button>
+                </div>
+
+                <div class="items-grid" id="videosContainer"></div>
+            </section>
+
+            <!-- Animations/Stickers Section -->
+            <section id="animations" class="content-section">
+                <h2>✨ Animations & Stickers Management</h2>
+                
+                <div class="action-card">
+                    <h3>Upload Animation/Sticker</h3>
+                    <input type="text" id="animationName" placeholder="Animation Name">
+                    <input type="file" id="animationFile" accept="image/*,video/*,.gif,.webm,.json">
+                    <div class="file-info" id="animationFileInfo"></div>
+                    <button onclick="uploadAnimation()" class="btn-primary">Upload Animation</button>
+                    <p style="font-size: 12px; color: #94a3b8; margin-top: 10px;">
+                        Supported formats: GIF, Video (MP4, WebM), Images (PNG, JPG), JSON (Lottie)
+                    </p>
+                </div>
+
+                <div class="animations-grid" id="animationsContainer"></div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders" class="content-section">
+                <h2>📦 Orders Management</h2>
+                
+                <div class="orders-filter">
+                    <button class="filter-btn active" onclick="filterOrders('all')">All</button>
+                    <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
+                    <button class="filter-btn" onclick="filterOrders('approved')">Approved</button>
+                    <button class="filter-btn" onclick="filterOrders('rejected')">Rejected</button>
+                </div>
+
+                <div class="orders-list" id="ordersContainer"></div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users" class="content-section">
+                <h2>👥 Users Management</h2>
+                
+                <div class="users-stats">
+                    <div class="stat-card">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Total Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="todayUsers">0</h3>
+                        <p>Today's Registrations</p>
+                    </div>
+                </div>
+
+                <div class="users-list" id="usersContainer"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Emoji Picker Modal -->
+    <div id="emojiPickerModal" class="modal">
+        <div class="modal-content emoji-picker-content">
+            <span class="close-modal" onclick="closeEmojiPicker()">&times;</span>
+            <h2>Select Animation/Sticker</h2>
+            <div class="emoji-search">
+                <input type="text" id="emojiSearch" placeholder="Search animations..." onkeyup="filterEmojis()">
+            </div>
+            <div class="emoji-grid" id="emojiGrid"></div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2 id="modalTitle">Edit Item</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeOrderModal()">&times;</span>
+            <h2>Order Details</h2>
+            <div id="orderModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Product Details Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            <h2>Product Details</h2>
+            <div id="productModalBody"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="enhanced_admin.js"></script>
+</body>
+</html>
