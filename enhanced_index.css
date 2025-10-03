@@ -391,7 +391,7 @@ body {
     padding: 15px 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 15px;
     border-radius: 0 0 20px 20px;
     box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
     border-bottom: 1px solid rgba(0, 212, 255, 0.2);
@@ -410,24 +410,6 @@ body {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    flex: 1;
-    text-align: center;
-}
-
-.back-button {
-    background: rgba(0, 212, 255, 0.2);
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.back-button:hover {
-    background: var(--primary-color);
-    color: white;
 }
 
 /* Content Wrapper */
@@ -502,7 +484,7 @@ body {
 .banner-item:hover {
     transform: scale(1.02);
     border-color: var(--primary-color);
-    box-shadow: var(--glow);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
 }
 
 /* Categories */
@@ -557,12 +539,12 @@ body {
 .category-button:hover {
     border-color: var(--primary-color);
     transform: translateY(-5px);
-    box-shadow: var(--glow);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
 }
 
 .category-button img {
-    width: 130px;
-    height: 130px;
+    width: 150px;
+    height: 150px;
     object-fit: contain;
     margin-bottom: 20px;
 }
